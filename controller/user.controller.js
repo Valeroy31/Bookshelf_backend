@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
+const { AiFillCustomerService } = require("react-icons/ai");
 const createUser = async(req, res) => {
     const { username, email, password } = req.body;
 
@@ -43,4 +44,15 @@ const createUser = async(req, res) => {
     }
   };
 
-module.exports = { createUser };
+  const getUsers =async(req, res)=>{
+    try {
+  const allUsers =  await userModel.find()
+    res.send({status: true, allUsers})
+    } catch (error) {
+        res.send({status: false, message: 'could not get users', error: error.message})
+    }
+    
+
+  }
+
+module.exports = { createUser, getUsers };
