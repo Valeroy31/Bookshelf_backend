@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
-const createUser = () => {
-  async (req, res) => {
+const createUser = async(req, res) => {
     const { username, email, password } = req.body;
 
     try {
@@ -39,9 +38,9 @@ const createUser = () => {
           .status(400)
           .json({ message: "username or email already exists" });
       }
-      res.status(500).json({ message: "could not create user", error });
+      res.status(500).json({ message: "could not create user", error: error.message });
+     
     }
   };
-};
 
 module.exports = { createUser };
