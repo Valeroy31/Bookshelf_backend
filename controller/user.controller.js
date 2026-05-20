@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
-const { AiFillCustomerService } = require("react-icons/ai");
 const createUser = async(req, res) => {
     const { username, email, password } = req.body;
 
