@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
 const createUser = async(req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, dateCreated, lastVisited } = req.body;
 
     try {
-      const user = await userModel.create({ username, email, password });
+      const user = await userModel.create({ username, email, password, dateCreated, lastVisited });
       let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
