@@ -8,6 +8,11 @@ const {createUser, getUsers} = require('../controller/user.controller')
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 
-router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}))
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), 
+  (req, res)=>{
+    res.redirect('http://localhost:5173/dashboard')
+  }
+
+)
 
 module.exports = router
