@@ -20,6 +20,9 @@ app.use(
   }),
 );
 connect();
+//passport middleware
+app.use(passport.initialize()); //initialize passport for authentication
+app.use(passport.session()); //persistent login sessions, passport will serialize and deserialize user instances to and from the session
 //passport config for google auth
 require('./Config/passport.js')(passport)
 
@@ -30,9 +33,7 @@ app.use("/api/v1/admins", adminRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1", googleAuthRoute);
 
-//passport middleware
-app.use(passport.initialize()); //initialize passport for authentication
-app.use(passport.session()); //persistent login sessions, passport will serialize and deserialize user instances to and from the session
+
 
 app.listen(port, (err) => {
   if (err) {
