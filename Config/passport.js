@@ -9,7 +9,25 @@ module.exports = function(passport){
         callbackURL: "https://bookshelf-backend-pahb.onrender.com/api/v1/auth/google/callback"
     },
     async (accessToken, refreshToken, profile, done) =>{
-        console.log(profile)
+        const newUser = {
+            googleId: profile.id,
+            username: profile.displayName,
+            userImage: profile.photos[0].value
+        }
+
+        try {
+            let user = await userModel.findOne({googleId: profile.id}) //check if the user is already registered
+            if(user){
+                return done(null, user)
+            }else{
+ let user = userModel.create(newUser)
+          return  done(null, user)
+            }
+           
+        } catch (error) {
+            return done(error)
+            console.log(error);
+        }
     }))
 
   passport.serializeUser((user, done)=>{
