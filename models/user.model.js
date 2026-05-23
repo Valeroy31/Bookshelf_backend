@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     googleId:{
         type: String,
         unique: true,
-        required: true
+        sparse: true //ignore db documents that do not have it
     },
     username: {
         type: String,
@@ -21,9 +21,11 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type: String,
-        required: true,
         trim: true,
         minLength: 6,
+        required: ()=>{
+            return !this.googleId //required only if google id is absent
+        }
     },
     userImage:{
         type: String
