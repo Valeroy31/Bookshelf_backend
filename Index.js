@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bcrypt = require('bcryptjs')
 const dotenv = require("dotenv");
 dotenv.config();
 const passport = require("passport"); //for authentication

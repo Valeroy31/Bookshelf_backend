@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oidc');
+const session = require('express-session')
 const router = express.Router();
 const userModel = require('../models/user.model')
 const {createUser, getUsers} = require('../controller/user.controller')
@@ -14,5 +14,18 @@ router.get('/auth/google/callback', passport.authenticate('google', {failureRedi
   }
 
 )
+router.post('/logout', (req, res)=>{
+  req.logout( err =>{
+if (err)  return next(err)
+  req.session.destroy( err=>{
+if (err) return next(err)})
+  res.status(200).json('logout successful')
+  }
+    
+  )
+})
+
 
 module.exports = router
+
+

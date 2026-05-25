@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const nodemailer = require("nodemailer");
+const bcrypt = require('bcryptjs')
 const createUser = async(req, res) => {
-    const { username, email, password, dateCreated, lastVisited } = req.body;
 
     try {
-      const user = await userModel.create({ username, email, password, dateCreated, lastVisited });
+      
+    const { username, email, password, dateCreated, lastVisited } = req.body;
+    const salt = await bcrypt.genSalt(12)
+    const hash = await bcrypt.hash(password, salt)
+      const user = await userModel.create({ username, email, password: hash, dateCreated, lastVisited });
       let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -38,7 +42,7 @@ const createUser = async(req, res) => {
           .status(400)
           .json({ message: "username or email already exists" });
       }
-      res.status(500).json({ message: "could not create user", error: error.message });
+      res.status(500).json({ message: 'Cannot create User at this time', error: error.message });
      
     }
   };
@@ -53,5 +57,30 @@ const createUser = async(req, res) => {
     
 
   }
+const loginUser = async(req,res)=>{
 
-module.exports = { createUser, getUsers };
+  try {
+    const {username, password} = req.body
+ const checkUsername = await userModel.findOne({username})
+ if (!checkUsername)   return res.status(400).json('Account not found. Please signup')
+ 
+  const isValid = await bcrypt.compare(password, checkUsername.password)
+  if (isValid)  {
+    return res.status(200).json('Login successful')
+
+  }else{
+    return res.status(400).json('Invalid credentials')
+  }
+  } catch (error) {
+    return res.status(500).json(error.message)
+  }
+ 
+  
+  
+ 
+
+
+ 
+
+}
+module.exports = { createUser, getUsers, loginUser };
