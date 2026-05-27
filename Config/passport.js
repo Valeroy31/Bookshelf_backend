@@ -22,7 +22,7 @@ module.exports = function (passport) {
           };
 
           let existingUser = await userModel.findOne({ googleId: profile.id }); //check if the user is already registered
-          if (existingUser) return done(null, user);
+          if (existingUser) return done(null, existingUser);
 
           const email = profile.emails?.[0]?.value;
           const sameEmail = await userModel.findOne({ email });
@@ -53,12 +53,9 @@ module.exports = function (passport) {
               console.log(error);
             } else {
               console.log("Email sent: " + info.response);
-              res
-                .status(201)
-                .json({ message: "Email sent successfully" }, info.response);
-            }
+               }
           });
-          return done(null, user);
+          return done(null, createUser);
         } catch (error) {
           return done(error);
         }

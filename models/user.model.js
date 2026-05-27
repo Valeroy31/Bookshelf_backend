@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         minLength: 6,
-        required: ()=>{
+        required: function () {
             return !this.googleId //required only if google id is absent
         }
     },

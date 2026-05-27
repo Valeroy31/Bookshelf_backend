@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
+const jwt = require('jsonwebtoken')
 const nodemailer = require("nodemailer");
 const bcrypt = require('bcryptjs')
 const createUser = async(req, res) => {
@@ -66,7 +67,8 @@ const loginUser = async(req,res)=>{
  
   const isValid = await bcrypt.compare(password, checkUsername.password)
   if (isValid)  {
-    return res.status(200).json('Login successful')
+   const token = jwt.sign({sub: checkUsername.username}, process.env.JWT_SECRET, {expiresIn: '7d'})
+    return res.status(200).json('Login successful', token)
 
   }else{
     return res.status(400).json('Invalid credentials')
