@@ -11,6 +11,8 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), 
   (req, res)=>{
+    console.log(req);
+    
     res.redirect('http://localhost:5173/dashboard')
   }
 
