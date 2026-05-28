@@ -31,10 +31,7 @@ const createUser = async(req, res) => {
           console.log(error);
         } else {
           console.log("Email sent: " + info.response);
-          res
-            .status(201)
-            .json({ message: "Email sent successfully" }, info.response);
-        }
+         }
       });
       res.status(201).json({ message: "user created successfully", user });
     } catch (error) {
@@ -67,8 +64,8 @@ const loginUser = async(req,res)=>{
  
   const isValid = await bcrypt.compare(password, checkUsername.password)
   if (isValid)  {
-   const token = jwt.sign({sub: checkUsername.username}, process.env.JWT_SECRET, {expiresIn: '7d'})
-    return res.status(200).json('Login successful', token)
+   const token = jwt.sign({sub: checkUsername._id, username: checkUsername.username}, process.env.JWT_SECRET, {expiresIn: '7d'})
+    return res.status(200).json({ message: 'Login successful', token })
 
   }else{
     return res.status(400).json('Invalid credentials')

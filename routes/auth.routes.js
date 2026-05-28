@@ -11,9 +11,9 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 
 router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/login'}), 
   (req, res)=>{
-    console.log(req);
+  const token =  jwt.sign({sub: req.user._id, username: req.user.username}, process.env.JWT_SECRET, {expiresIn: '7d'})
     
-    res.redirect('http://localhost:5173/dashboard')
+     res.redirect(`http://localhost:5173/auth/callback?token=${token}`)
   }
 
 )
