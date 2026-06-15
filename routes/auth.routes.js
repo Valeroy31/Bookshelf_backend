@@ -13,20 +13,11 @@ router.get('/auth/google/callback', passport.authenticate('google', {failureRedi
   (req, res)=>{
   const token =  jwt.sign({sub: req.user._id, username: req.user.username}, process.env.JWT_SECRET, {expiresIn: '7d'})
     
-     res.redirect(`http://localhost:5173/auth/callback?token=${token}`)
+     res.redirect(`http://localhost:5173/auth/callback?state=${token}`)
   }
 
 )
-router.post('/logout', (req, res)=>{
-  req.logout( err =>{
-if (err)  return next(err)
-  req.session.destroy( err=>{
-if (err) return next(err)})
-  res.status(200).json('logout successful')
-  }
-    
-  )
-})
+
 
 
 module.exports = router

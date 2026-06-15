@@ -6,6 +6,16 @@ const userSchema = new mongoose.Schema({
         unique: true,
         sparse: true //ignore db documents that do not have it
     },
+      firstName:{
+        type: String,
+        trim: true,
+        sparse: true //ignore db documents that do not have it
+    },
+      lastName:{
+        type: String,
+        trim: true,
+        sparse: true //ignore db documents that do not have it
+    },
     username: {
         type: String,
         required: true,
