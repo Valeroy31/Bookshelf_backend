@@ -28,10 +28,12 @@ app.use(passport.session()); //persistent login sessions, passport will serializ
 require('./Config/passport.js')(passport)
 
 const userRoute = require("./routes/user.routes.js");
+const reviewRoute = require("./routes/review.routes.js");
 const adminRoute = require("./routes/admin.routes.js");
 const googleAuthRoute = require("./routes/auth.routes.js");
 app.use("/api/v1/admins", adminRoute);
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/reviews", reviewRoute);
 app.use("/api/v1", googleAuthRoute);
 
 
