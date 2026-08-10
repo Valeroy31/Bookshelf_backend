@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const reviewModel = require("../models/review.model");
 
-exports.createReview = async (req, res)=>{
+const createReview = async (req, res, next)=>{
     try {
         const {title, body, rating, bookId, dateCreated} = req.body
         if(!title || !body || !rating){
@@ -9,21 +9,21 @@ exports.createReview = async (req, res)=>{
         }
         const newReview = await reviewModel.create({title, body, rating, bookId, dateCreated});
         console.log(req.body);
-        
+
         res.status(201).json(newReview);
     } catch (error) {
-        res.status(500).json({message: "Error creating review", error});
-        console.log(error);
-        
+        next(error);
     }
 }
 
-exports.getReviews = async (req, res)=>{
+const getReviews = async (req, res, next)=>{
     try {
         const reviews = await reviewModel.find({bookId: req.params.bookId});
         res.status(200).json(reviews);
-        
+
     } catch (error) {
-        res.status(500).json({message: "Error fetching reviews", error});
+        next(error);
     }
 }
+
+module.exports = {createReview, getReviews}

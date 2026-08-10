@@ -2,7 +2,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const userModel = require("../models/user.model");
-
+const jwt = require("jsonwebtoken");
 module.exports = function (passport) {
   passport.use(
     new GoogleStrategy(
@@ -10,15 +10,18 @@ module.exports = function (passport) {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL:
-          "https://bookshelf-backend-pahb.onrender.com/api/v1/auth/google/callback",
+          "http://localhost:5000/api/v1/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
+          console.log(profile);
+          
           const newUser = {
             googleId: profile.id,
             username: profile.displayName,
             userImage: profile.photos?.[0]?.value,
             email: profile.emails?.[0]?.value,
+         
           };
 
           let existingUser = await userModel.findOne({ googleId: profile.id }); //check if the user is already registered

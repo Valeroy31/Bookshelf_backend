@@ -42,11 +42,15 @@ const userSchema = new mongoose.Schema({
     },
     dateCreated:{
         type: Date,
-        default: Date.now
+        default:  new Date() 
     },
       lastVisited: {
         type: Date,
-        default: new Date()
+        default: Date.now
+    },
+    refreshToken: {
+        type: String,
+        sparse: true
     },
     
 })
